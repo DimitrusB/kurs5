@@ -13,14 +13,14 @@ const server = http.createServer((request, response) => {
     const pathName = reqUrl.pathname;
     const userName = reqUrl.query.userName;
     const user = getUserByName(userName);
-    const data = JSON.stringify(getUsers())
+    
 
     if (pathName === '/') {
         response.writeHead(200, { 'Content-Type': 'text/plain' });
         response.end('Hello, World!')
     } else if (pathName === '/users') {
-        response.writeHead(200, { 'Content-Type': 'text/plain' });
-        response.end(data);
+        response.writeHead(200, { 'Content-Type': 'application/json' });
+        response.end(getUsers());
     } else if (pathName === '/hello') {
         if (!userName) {
             response.writeHead(400, { 'Content-Type': 'text/plain' });
@@ -37,6 +37,7 @@ const server = http.createServer((request, response) => {
         response.end(' ');
     }
 });
+
 
 server.listen(port, () => {
     console.log(`Server is running on http://${hostname()}:${port}`);
