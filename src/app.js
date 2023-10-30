@@ -1,8 +1,9 @@
 const http = require('http')
-const getUsers = require('./data/modules/getUsers');
+const getUsers = require('./data/modules/getUsers.js');
+const { hostname } = require('os');
 
 
-const hostname = '127.0.0.1'
+
 const port = 3003
 
 const server = http.createServer((request, response) => {
@@ -10,15 +11,13 @@ const server = http.createServer((request, response) => {
   const searchParams = url.searchParams
 
   if (!searchParams.toString().length) {
-    response.writeHead(200, { 'Content-Type': 'text/plain' });
-    response.end('Hello, World!')
     response.statusCode = 200
     response.statusMessage = 'OK'
     response.setHeader('Content-Type', 'text/plain')
     response.write('Hello, World!')
     response.end()
-
     return
+
   }
 
   for (let [key, value] of searchParams.entries()) {
@@ -30,7 +29,7 @@ const server = http.createServer((request, response) => {
         response.write(getUsers())
         response.end()
         break
-      case 'hello':
+      case 'hello':  
         if (value) {
           response.statusCode = 200
           response.statusMessage = 'OK'
@@ -51,7 +50,7 @@ const server = http.createServer((request, response) => {
     }
   }
 })
-
+ 
 server.listen(port, hostname, () => {
   console.log(`Сервер запущен по адресу http://${hostname}:${port}/`)
 })
