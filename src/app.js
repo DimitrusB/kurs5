@@ -28,10 +28,10 @@ const server = http.createServer((request, response) => {
         } else if (user) {
             response.writeHead(200, { 'Content-Type': 'text/plain' });
             response.end(`Hello, ${user.name}!`);}
-            //  else {
-        //     response.writeHead(404, { 'Content-Type': 'text/plain' });
-        //     response.end('No user found with this name.');
-        // }
+             else {
+            response.writeHead(404, { 'Content-Type': 'text/plain' });
+            response.end('No user found with this name.');
+        }
     } else {
         response.writeHead(500, { 'Content-Type': 'text/plain' });
         response.end(' ');
