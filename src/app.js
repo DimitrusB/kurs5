@@ -1,44 +1,57 @@
-const http = require('http');
-const url = require('url');
-// const hostanme = 127.0.0.1
-const { hostname } = require('os');
-const users = require('../src/data/users.json');
+const http = require('http')
 const getUsers = require('./data/modules/getUsers');
-const port = 3003;
 
-const getUserByName = (name) => users.find(user => user.name === name);
+
+const hostname = '127.0.0.1'
+const port = 3003
 
 const server = http.createServer((request, response) => {
-    const reqUrl = url.parse(request.url, true);
-    const pathName = reqUrl.pathname;
-    const userName = reqUrl.query.userName;
-    const user = getUserByName(userName);
-    
+  const url = new URL(request.url, 'http://127.0.0.1')
+  const searchParams = url.searchParams
 
-    if (pathName === '/') {
-        response.writeHead(200, { 'Content-Type': 'text/plain' });
-        response.end('Hello, World!')
-    } else if (pathName === '/users') {
-        response.writeHead(200, { 'Content-Type': 'application/json' });
-        response.end(getUsers());
-    } else if (pathName === '/hello') {
-        if (!userName) {
-            response.writeHead(400, { 'Content-Type': 'text/plain' });
-            response.end('Enter a name');
-        } else if (user) {
-            response.writeHead(200, { 'Content-Type': 'text/plain' });
-            response.end(`Hello, ${user.name}!`);}
-             else {
-            response.writeHead(404, { 'Content-Type': 'text/plain' });
-            response.end('No user found with this name.');
+  if (!searchParams.toString().length) {
+    response.writeHead(200, { 'Content-Type': 'text/plain' });
+    response.end('Hello, World!')
+    response.statusCode = 200
+    response.statusMessage = 'OK'
+    response.setHeader('Content-Type', 'text/plain')
+    response.write('Hello, World!')
+    response.end()
+
+    return
+  }
+
+  for (let [key, value] of searchParams.entries()) {
+    switch (key) {
+      case 'users':
+        response.statusCode = 200
+        response.statusMessage = 'OK'
+        response.setHeader('Content-Type', 'application/json')
+        response.write(getUsers())
+        response.end()
+        break
+      case 'hello':
+        if (value) {
+          response.statusCode = 200
+          response.statusMessage = 'OK'
+          response.setHeader('Content-Type', 'text/plain')
+          response.write(`Hello, ${value}.`)
+          response.end()
+        } else {
+          response.statusCode = 400
+          response.setHeader('Content-Type', 'text/plain')
+          response.write('Enter a name')
+          response.end()
         }
-    } else {
-        response.writeHead(500, { 'Content-Type': 'text/plain' });
-        response.end(' ');
+        break
+      default:
+        response.statusCode = 500
+        response.end()
+        break
     }
-});
+  }
+})
 
-
-server.listen(port, () => {
-    console.log(`Server is running on http://${hostname()}:${port}`);
-});
+server.listen(port, hostname, () => {
+  console.log(`Сервер запущен по адресу http://${hostname}:${port}/`)
+})
