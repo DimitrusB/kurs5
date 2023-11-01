@@ -1,5 +1,6 @@
 const http = require('http')
 const getUsers = require('./data/modules/getUsers.js');
+const getBooks = require('./data/modules/getBooks.js');
 const { hostname } = require('os');
 
 
@@ -21,6 +22,9 @@ const server = http.createServer((request, response) => {
       case 'users':
         sendResponse(response, 200, 'OK', 'application/json', getUsers());
         break;
+        case 'books':
+          sendResponse(response, 200, 'OK', 'application/json', getBooks());
+          break;
       case 'hello':
         if (value) {
           sendResponse(response, 200, 'OK', 'text/plain', `Hello, ${value}.`);
