@@ -1,4 +1,4 @@
-const { default: mongoose } = require("mongoose");
+const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -6,7 +6,7 @@ const userSchema = new mongoose.Schema({
     required: true,
     minLength: 2,
   },
-  surname: {
+  lastname: {
     type: String,
     required: true,
     minLength: 2,

@@ -4,17 +4,28 @@ const getBooks = require("./data/modules/getBooks.js");
 const express = require("express");
 const cors = require("cors");
 const dotenv = require('dotenv');
+const mongoose = require('mongoose');
+const route  = require("./routes/routes");
+
 
 dotenv.config();
-const { PORT = 3000, API_URL = 'http://localhost' } = process.env;
+const { PORT = 3000, API_URL = 'http://localhost', MONGO_URL = "mongodb://127.0.0.1:27017/backendHW"  } = process.env;
 
 const server = express();
+
+mongoose
+  .connect(MONGO_URL)
+  .catch((error) => handleError(error));
+
 
 server.use(cors());
 
 const helloWorld = (request, response) => {
   sendResponse(response, 200, "OK", "text/plain", "Hello, World!");
 };
+
+server.use(route)
+
 server.get("/", helloWorld);
 
 // const server = http.createServer((request, response) => {
