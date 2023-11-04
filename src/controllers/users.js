@@ -1,3 +1,4 @@
+const { request, response } = require("express");
 const User = require("../models/user");
 
 const getUsers = (request, response) => {

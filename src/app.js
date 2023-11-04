@@ -22,13 +22,14 @@ mongoose
 .then(() => console.log("Connected to MongoDB"))
 .catch((err) => console.error("Failed to connect to MongoDB", err));
 
-server.use(cors());
+
 
 const helloWorld = (request, response) => {
   sendResponse(response, 200, "OK", "text/plain", "Hello, World!");
 };
 
-server.use(route);
+server.use(cors());
+
 server.use(bodyParser.json());
 
 server.get("/", helloWorld);
@@ -71,6 +72,9 @@ function sendResponse(response, statusCode, statusMessage, contentType, data) {
   response.write(data);
   response.end();
 }
+
+server.use(route);
+
 server.listen(PORT, () => {
   console.log(`Сервер запущен по адресу http://${API_URL}:${PORT}/`);
 });
