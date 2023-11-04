@@ -1,4 +1,4 @@
-const { default: mongoose } = require("mongoose");
+const mongoose = require("mongoose");
 
 const bookSchema = new mongoose.Schema({
   title: {
@@ -11,10 +11,9 @@ const bookSchema = new mongoose.Schema({
     required: true,
     minLength: 2,
   },
-  email: {
+  year: {
     type: Number,
     required: true,
-    minLength: 4,
   },
 });
 

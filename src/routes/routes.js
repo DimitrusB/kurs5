@@ -2,9 +2,9 @@ const { application } = require("express");
 const {
   getUsers,
   getUser,
-  createUser,
   updateUser,
   deleteUser,
+  createUser,
 } = require("../controllers/users");
 const {
   getBooks,
@@ -24,7 +24,7 @@ route.delete("/users/:user_id", deleteUser);
 
 route.get("/books", getBooks);
 route.get("/books/:book_id", getBook);
-route.post("/books", createBook); 
+route.post("/books", createBook);
 route.patch("/books/:book_id", updateBook);
 route.delete("/books/:book_id", deleteBook);
 

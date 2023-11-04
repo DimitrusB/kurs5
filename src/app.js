@@ -1,22 +1,26 @@
-const http = require("http");
-const getUsers = require("./data/modules/getUsers.js");
-const getBooks = require("./data/modules/getBooks.js");
+// const http = require("http");
+// const getUsers = require("./data/modules/getUsers.js");
+// const getBooks = require("./data/modules/getBooks.js");
 const express = require("express");
 const cors = require("cors");
-const dotenv = require('dotenv');
-const mongoose = require('mongoose');
-const route  = require("./routes/routes");
-
+const dotenv = require("dotenv");
+const mongoose = require("mongoose");
+const route = require("../src/routes/routes");
+const bodyParser = require("body-parser");
 
 dotenv.config();
-const { PORT = 3000, API_URL = 'http://localhost', MONGO_URL = "mongodb://127.0.0.1:27017/backendHW"  } = process.env;
+const {
+  PORT = 3000,
+  API_URL = "http://127.0.0.1",
+  MONGO_URL = "mongodb://127.0.0.1:27017/backendHW",
+} = process.env;
 
 const server = express();
 
 mongoose
-  .connect(MONGO_URL)
-  .catch((error) => handleError(error));
-
+.connect(MONGO_URL)
+.then(() => console.log("Connected to MongoDB"))
+.catch((err) => console.error("Failed to connect to MongoDB", err));
 
 server.use(cors());
 
@@ -24,7 +28,8 @@ const helloWorld = (request, response) => {
   sendResponse(response, 200, "OK", "text/plain", "Hello, World!");
 };
 
-server.use(route)
+server.use(route);
+server.use(bodyParser.json());
 
 server.get("/", helloWorld);
 
