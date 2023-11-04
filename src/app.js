@@ -1,54 +1,60 @@
-const http = require('http')
-const getUsers = require('./data/modules/getUsers.js');
-const getBooks = require('./data/modules/getBooks.js');
-const { hostname } = require('os');
+const http = require("http");
+const getUsers = require("./data/modules/getUsers.js");
+const getBooks = require("./data/modules/getBooks.js");
+const express = require("express");
+const cors = require("cors");
+const dotenv = require('dotenv');
 
+dotenv.config();
+const { PORT = 3000, API_URL = 'http://localhost' } = process.env;
 
+const server = express();
 
-const port = 3003
+server.use(cors());
 
-const server = http.createServer((request, response) => {
-  const url = new URL(request.url, 'http://127.0.0.1')
-  const searchParams = url.searchParams
+const helloWorld = (request, response) => {
+  sendResponse(response, 200, "OK", "text/plain", "Hello, World!");
+};
+server.get("/", helloWorld);
 
+// const server = http.createServer((request, response) => {
+//   const url = new URL(request.url, 'http://127.0.0.1')
+//   const searchParams = url.searchParams
 
-  if (!searchParams.toString().length) {
-    sendResponse(response, 200, 'OK', 'text/plain', 'Hello, World!');
-    return;
-  }
+//   if (!searchParams.toString().length) {
+//     sendResponse(response, 200, 'OK', 'text/plain', 'Hello, World!');
+//     return;
+//   }
 
-  for (let [key, value] of searchParams.entries()) {
-    switch (key) {
-      case 'users':
-        sendResponse(response, 200, 'OK', 'application/json', getUsers());
-        break;
-        case 'books':
-          sendResponse(response, 200, 'OK', 'application/json', getBooks());
-          break;
-      case 'hello':
-        if (value) {
-          sendResponse(response, 200, 'OK', 'text/plain', `Hello, ${value}.`);
-        } else {
-          sendResponse(response, 400, 'Bad Request', 'text/plain', 'Enter a name');
-        }
-        break;
-      default:
-        sendResponse(response, 500, 'Bad Request', 'text/plain', ' ');
-        break;
-    }
-  }
-});
+//   for (let [key, value] of searchParams.entries()) {
+//     switch (key) {
+//       case 'users':
+//         sendResponse(response, 200, 'OK', 'application/json', getUsers());
+//         break;
+//         case 'books':
+//           sendResponse(response, 200, 'OK', 'application/json', getBooks());
+//           break;
+//       case 'hello':
+//         if (value) {
+//           sendResponse(response, 200, 'OK', 'text/plain', `Hello, ${value}.`);
+//         } else {
+//           sendResponse(response, 400, 'Bad Request', 'text/plain', 'Enter a name');
+//         }
+//         break;
+//       default:
+//         sendResponse(response, 500, 'Bad Request', 'text/plain', ' ');
+//         break;
+//     }
+//   }
+// });
 
 function sendResponse(response, statusCode, statusMessage, contentType, data) {
   response.statusCode = statusCode;
   response.statusMessage = statusMessage;
-  response.setHeader('Content-Type', contentType);
+  response.setHeader("Content-Type", contentType);
   response.write(data);
   response.end();
 }
-server.listen(port, hostname, () => {
-  console.log(`Сервер запущен по адресу http://${hostname}:${port}/`)
-})
-
-
-
+server.listen(PORT, () => {
+  console.log(`Сервер запущен по адресу http://${API_URL}:${PORT}/`);
+});
