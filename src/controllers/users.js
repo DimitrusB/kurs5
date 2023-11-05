@@ -51,10 +51,12 @@ const deleteUser = (req, res) => {
     .then((user) => {
       res.status(200).send("Done");
     })
+    
     .catch((e) => {
       res.status(500).send(e.message);
     });
 };
+
 module.exports = {
   getUser,
   getUsers,

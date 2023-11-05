@@ -7,6 +7,7 @@ const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 const route = require("../src/routes/routes");
 const bodyParser = require("body-parser");
+const logger = require("./middleware/logger");
 
 dotenv.config();
 const {
@@ -27,7 +28,7 @@ mongoose
 const helloWorld = (request, response) => {
   sendResponse(response, 200, "OK", "text/plain", "Hello, World!");
 };
-
+server.use(logger)
 server.use(cors());
 
 server.use(bodyParser.json());

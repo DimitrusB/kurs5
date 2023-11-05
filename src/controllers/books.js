@@ -12,8 +12,8 @@ const getBooks = (request, response) => {
 }
 
 const getBook = (req, res) => {
-  const { user_id } = req.params;
-  Book.findById(user_id)
+  const { book_id } = req.params;
+  Book.findById(book_id)
       .then(book => {
           res.status(200).send(book);
       })
@@ -34,9 +34,9 @@ const createBook = (request, response) => {
 }
 
 const updateBook = (req, res) => {
-  const { user_id } = req.params;
+  const { book_id } = req.params;
   const data = req.body;
-  Book.findByIdAndUpdate(user_id, data, { new: true, runValidators: true })
+  Book.findByIdAndUpdate(book_id, data, { new: true, runValidators: true })
       .then(book => {
           res.status(200).send(book);
       })
@@ -46,8 +46,8 @@ const updateBook = (req, res) => {
 }
 
 const deleteBook = (req, res) => {
-  const { user_id } = req.params;
-  Book.findByIdAndDelete(user_id)
+  const { book_id } = req.params;
+  Book.findByIdAndDelete(book_id)
       .then(book => {
           res.status(200).send("Done");
       })

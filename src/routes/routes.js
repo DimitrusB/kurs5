@@ -13,8 +13,10 @@ const {
   updateBook,
   deleteBook,
 } = require("../controllers/books");
+const logger = require("../middleware/logger");
 
 const route = require("express").Router();
+route.use(logger)
 
 route.get("/users", getUsers);
 route.get("/users/:user_id", getUser);
